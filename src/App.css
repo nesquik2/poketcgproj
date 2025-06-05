@@ -1,31 +1,9 @@
-.App {
-  text-align: center;
-}
+/* default from create-react-app */
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
+/* @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
 }
 
 @keyframes App-logo-spin {
@@ -35,4 +13,116 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+/* from me */
+
+.page{
+    font-family: Helvetica;
+    text-transform: uppercase;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+.section {
+    max-width: 250px;
+    background-color: white;
+    border-radius: 1    xpx;
+    box-shadow: 0 0 2px 1px rgb(196, 148, 156);
+    padding: 10px;
+    margin: 5px auto;
+    font-weight: 200;
+    background-color: rgb(248, 226, 230);
+}
+
+img{
+    border-radius: 5px;
+    max-width: 150px;
+}
+
+h2{
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+
+/* collection */
+.row{
+    display:flex;
+    flex-direction: column;
+    padding: 10px;
+    margin: 10px;
+    width: 100%;
+    background-color: rgb(248, 226, 230);
+    border-radius: 5px;
+    box-shadow: 0 0 3px 1px  rgb(196, 148, 156);
+}
+
+.sets{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cards{
+    max-width: 250px;
+    padding: 10px;
+    margin: 10px;
+    background-color: rgb(255, 236, 151);
+    border-radius: 10px;
+    box-shadow: 0 0 4px 1px rgb(230, 161, 96);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+img{
+    border-radius: 10px;
+    max-width: 150px;
+    border: rgb(196, 148, 156);
+    border-width: 2px;
+    border-style: solid;
+}
+
+a {
+    color:black;
+    text-decoration: none;
+}
+
+.packs{
+    align-items: horizontal;
+    display: flex;
+    font-weight: 100;
+    font-size: 1.2rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.set{
+    background-color: rgb(248, 226, 230);
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 0 4px 1px  rgb(196, 148, 156);
+    margin: 15px;
+    align-items: center;
+}
+
+.lineup{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+button{
+    font-size: 1.2rem;
+    background-color: rgb(248, 226, 230);
+    text-transform: uppercase; 
+    border: none;
+    border-radius: 10px;
+    color: rgb(217, 110, 128);
+    padding:5px;
+    margin: 5px;
+    box-shadow: 0 0 4px 1px  rgb(196, 148, 156);
+
 }
