@@ -1,13 +1,65 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+export const packs ={
+            1: [ //100% electric achievement
+                {name:"pikachu", rarity:"common"}, 
+                {name:"pichu", rarity:"common"}, 
+                {name:"raichu", rarity:"uncommon"}, 
+                {name:"togedemaru", rarity:"common"},
+                {name:"lanturn", rarity:"common"},
+                {name:"chinchou", rarity:"common"},
+                {name:"mareep", rarity:"rare"},
+                {name:"flaaffy", rarity:"ultra"},
+                {name:"ampharos", rarity:"ultra"},                
+                {name:"plusle", rarity:"common"}, //twin achievement
+                {name:"minun", rarity:"ultra"}, 
+                {name:"shinx", rarity:"rare"}, 
+                {name:"luxio", rarity:"common"},
+                {name:"luxray", rarity:"ultra"}, // evol achievement
+                {name:"dedenne", rarity:"ultra"},  
+                {name:"pachirisu", rarity:"rare"},  //fav pokemon achievement
+                {name:"emolga", rarity:"rare"},
+                {name:"zekrom", rarity:"legendary"} //achievement
+            ],
+            2: [
+                {name:"squirtle", rarity:"common"}, 
+                {name:"maril", rarity:"rare"},
+                {name:"buizel", rarity:"common"},
+                {name:"piplup", rarity:"common"},
+                {name:"oshawott", rarity:"rare"}, 
+                {name:"spheal", rarity:"uncommon"}, 
+                {name:"vaporeon", rarity:"legendary"}, 
+                {name:"wishiwashi", rarity:"ultra"},
+                {name:"milotic", rarity:"ultra"}
+            ],
+            3: [
+                {name:"elesa", rarity:"rare"}, 
+                {name:"lillie", rarity:"ultra"}, 
+                {name:"erika", rarity:"uncommon"}, 
+                {name:"n", rarity:"legendary"}, //achievement
+                {name:"bianca", rarity:"common"}, 
+                {name:"pokecenter lady", rarity:"common"}, 
+                {name:"hex maniac", rarity:"common"}, 
+                {name:"shauna", rarity:"uncommon"}, 
+                {name:"mallow & lana", rarity:"rare"}, //achievement
+                {name:"acerola", rarity:"rare"}, 
+                {name:"marnie", rarity:"uncommon"}, 
+                {name:"irida", rarity:"uncommon"}, 
+                {name:"iono", rarity:"ultra"}
+            ]
+};
+
 export default function OpenPack() {
     const navigate = useNavigate();
-    const packs = {
-            1: ["pikachu", "pichu", "pachirisu", "plusle", "minun", "shinx", "dedenne", "togedemaru"],
-            2: ["squirtle", "maril", "buizel", "piplup", "oshawott", "vaporeon", "spheal", "wishiwashi"],
-            3: ["elesa", "lillie", "erika", "n", "bianca", "marnie", "irida", "iono"]
-    };
+
+    const rarityChances = [
+        {type: "common", chance: 0.45},
+        {type: "uncommon", chance: 0.3},
+        {type: "rare", chance: 0.15},
+        {type: "ultra", chance: 0.08},
+        {type: "legendary", chance: 0.02}
+    ]
 
     const images = {
         1: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmkEl7rrrLrXcWdLB8oIqnQyzJIFHfIF5VO-e7672fr-4JcQW0VltWf68_maOieG3s8Jw&usqp=CAU",
@@ -24,23 +76,41 @@ export default function OpenPack() {
         setStep("choosePack");
         setSet(setNumber);
     }
+
+    //choose a rarity, pick a card from the set with that rarity
+    function getCardWRarity(set){
+        const rand = Math.random();
+        let portion = 0;
+        for (const rarityNames of rarityChances) {
+            portion += rarityNames.chance;
+            if (rand <= portion) {
+                //filter out all the cards in the set that match the rarity
+                const possibleCards = packs[set].filter(card => card.rarity === rarityNames.type);
+                //pick a random one from the filtered list
+                return possibleCards[Math.floor(Math.random() * possibleCards.length)];
+            }
+        }
+    }
     
     function handlePackClick() {
         setStep("revealCards");
-        const shuffled = packs[set].slice().sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, 5);
-        setPackCards(selected);    
-    
+        
+        const selected = [];
+        //generate 5 random cards
+        for (let i = 0; i < 5; i++){
+            selected.push(getCardWRarity(set));
+        }
+        setPackCards(selected);
+       
         let collection = JSON.parse(sessionStorage.getItem('collection')) ||{
             set1_names: {},
             set2_names: {},
             set3_names: {}
         };
-
         //add new cards
         const setKey = `set${set}_names`;
         selected.forEach(card => {
-            collection[setKey][card] = (collection[setKey][card] || 0) + 1;
+            collection[setKey][card.name] = (collection[setKey][card.name] || 0) + 1;
         })
         //put colleciton back to localStorage
         sessionStorage.setItem('collection', JSON.stringify(collection));
@@ -55,7 +125,7 @@ export default function OpenPack() {
     }
     
     return (
-    <div class="page">
+    <div className="page">
         {step === "chooseSet" && (
 				<div>
 					<h2>Choose a set</h2>
@@ -91,8 +161,8 @@ export default function OpenPack() {
 	
     {step === "revealCards" && (
         <div className="cards" onClick={() => handleReveal()}>
-            <img src={`/pics/${packCards[revealCard]}.png`} alt={`card ${packCards[revealCard]}`} />
-            {packCards[revealCard]} Rarity: 1/8       
+            <img src={`/pics/${packCards[revealCard].name}.png`} alt={`card ${packCards[revealCard].name}`} />
+            {packCards[revealCard].name} Rarity: {packCards[revealCard].rarity}       
         </div>
     )}
 
@@ -101,8 +171,8 @@ export default function OpenPack() {
        <div className="lineup">
             {packCards.map(card => (
                 <div className="cards">
-                    <img src={`/pics/${card}.png`} alt={`${card} card`}/>
-                    {card} Rarity
+                    <img src={`/pics/${card.name}.png`} key={`${card.name}`} alt={`${card.name} card`}/>
+                    {card.name} Rarity: {card.rarity}
                 </div>
             ))}
         </div>
